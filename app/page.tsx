@@ -41,7 +41,12 @@ export default function Home() {
   const [isReading, setIsReading] = useState(false); // Track if the user has started reading
 
   return (
-    <div className={`flex min-h-screen items-center justify-center ${isReading ? 'bg-gray-950' : 'bg-linear-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800'}`}>
+    <div className={`flex min-h-screen items-center justify-center relative ${isReading ? 'bg-gray-950' : 'bg-linear-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800'}`}>
+      {/* Watermark */}
+      <div className={`absolute bottom-4 right-4 text-xs ${isReading ? 'text-gray-700' : 'text-gray-400 dark:text-gray-600'}`}>
+        Made by Jordan S. Johnson
+      </div>
+
       <main className="w-full max-w-4xl p-8">
 
         {/*=== Determine which view to show: Text input or reading ===*/}
