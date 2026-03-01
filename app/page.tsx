@@ -43,8 +43,17 @@ export default function Home() {
   return (
     <div className={`flex min-h-screen items-center justify-center relative ${isReading ? 'bg-gray-950' : 'bg-linear-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800'}`}>
       {/* Watermark */}
-      <div className={`absolute bottom-4 right-4 text-xs ${isReading ? 'text-gray-700' : 'text-gray-400 dark:text-gray-600'}`}>
-        Made by Jordan S. Johnson
+      <div className={`absolute bottom-4 right-4 flex items-center gap-2 text-xs ${isReading ? 'text-gray-700' : 'text-gray-400 dark:text-gray-600'}`}>
+        <span>Made by Jordan S. Johnson</span>
+        <a 
+          href="https://github.com/JJohnson183/RSVP-Reader" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="hover:opacity-70 transition-opacity"
+          aria-label="View on GitHub"
+        >
+          <img src="/github.svg" alt="GitHub" className="w-4 h-4" />
+        </a>
       </div>
 
       <main className="w-full max-w-4xl p-8">
