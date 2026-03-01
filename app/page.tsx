@@ -34,7 +34,8 @@ type WordTimerProps = {
 
 
 export default function Home() {
-  const [text, setText] = useState(""); // Hold user input
+  const startingText = "Rapid serial visual presentation (RSVP) is a scientific method for studying the timing of vision. In RSVP, a sequence of stimuli is shown to an observer at one location in their visual field.";
+  const [text, setText] = useState(startingText); // Hold user input
   const [isReading, setIsReading] = useState(false); // Track if the user has started reading
 
   return (
@@ -114,26 +115,33 @@ function ReadingView({ setIsReading, text }: ReadingViewProps) {
   useWordTimer({isPlaying, setIsPlaying, wpm, setCurrentIndex, wordsLength: words.length});
 
   return (
-    <div>
-      {/* Display the current word. Centered on the middle character */}
-     <div className="flex justify-center items-center text-6xl font-mono mb-12 h-24">
-      <span className="text-right w-96">{before}</span>
-      <span className="text-red-500 font-bold">{middle}</span>
-      <span className="text-left w-96">{after}</span>
-    </div>
-      
-      {/* Read Controls */}
-      <ReadOptions isPlaying={isPlaying} setIsPlaying={setIsPlaying} wpm={wpm} setWpm={setWpm} setCurrentIndex={setCurrentIndex}/>
+    <div className="flex flex-col justify-between" style={{ height: '90vh' }}>
 
-      {/* Button to go back to text input */}
-      <button className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors duration-300"
-        onClick={() => setIsReading(false)}
-      >
-        Enter New Text
-      </button>
+      {/* Display the current word. Centered on the middle character */}
+      <div className="flex justify-center items-center text-6xl font-mono flex-1">
+        <div className="flex h-24">
+          <span className="text-right w-96">{before}</span>
+          <span className="text-red-500 font-bold">{middle}</span>
+          <span className="text-left w-96">{after}</span>
+        </div>
+      </div>
+    
+      {/* Bottom items */}
+      <div className="max-w-md mx-auto w-full">
+        {/* Read Controls */}
+        <ReadOptions isPlaying={isPlaying} setIsPlaying={setIsPlaying} wpm={wpm} setWpm={setWpm} setCurrentIndex={setCurrentIndex}/>
+
+        {/* Return to Input View */}
+        <button className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors duration-300"
+          onClick={() => setIsReading(false)}
+        >
+          Enter New Text
+        </button>
+      </div>
     </div>
   );
 }
+
 //==================================================//
 //====================== Helpers =====================//
 // Option for controlling playback and speed of the reading.
