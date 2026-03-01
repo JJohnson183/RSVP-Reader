@@ -23,6 +23,14 @@ type ReadOptionsProps = {
   setWpm: (value: number) => void;
 };
 
+type WordTimerProps = {
+  isPlaying: boolean;
+  setIsPlaying: (value: boolean) => void;
+  wpm: number;
+  setCurrentIndex: React.Dispatch<React.SetStateAction<number>>;
+  wordsLength: number;
+};
+
 
 export default function Home() {
   const [text, setText] = useState(""); // Hold user input
@@ -57,6 +65,8 @@ export default function Home() {
   );
 }
 
+//===================================================//
+//==================== Views ========================//
 function TextInputView({ text, setText, setIsReading }: TextInputViewProps) {
   return (
     <div>
@@ -88,27 +98,28 @@ function ReadingView({ setIsReading, text }: ReadingViewProps) {
   const [isPlaying, setIsPlaying] = useState(false); // Track if the words are currently playing
   const [wpm, setWpm] = useState(300); // Display speed (words per minute)
 
-  // Runs when isPlaying or wpm changes. 
-  useEffect(() => {
-      if (!isPlaying) return; // If not playing, do nothing
-      
-      // Increment the current word index evey (60000 / wpm) milliseconds (convert WPM to ms per word)
-      const interval = setInterval(() => {
-        setCurrentIndex(prev => prev + 1);
-      }, 60000 / wpm);
-      
-      // Clear the interval when the component unmounts or when isPlaying/wpm changes
-      return () => clearInterval(interval);
-    }, 
-    [isPlaying, wpm] // Rerun when either isPlaying or wpm changes
-  );
+  // Get the middle character of the current word
+  const getMiddleCharacter = (word: string) => {
+    const middle = Math.floor(word.length / 2);
+    return {
+      before: word.slice(0, middle),
+      middle: word[middle],
+      after: word.slice(middle + 1)
+    };
+  };
+  const { before, middle, after } = getMiddleCharacter(words[currentIndex]);
+
+  // Increment through each word index according to the WPM. (Runs when isPlaying or wpm changes)
+  useWordTimer({isPlaying, setIsPlaying, wpm, setCurrentIndex, wordsLength: words.length});
 
   return (
     <div>
-      {/* Display the current word */}
-      <p className="text-center text-6xl font-bold text-gray-600 dark:text-gray-300 mb-8">
-        {words[currentIndex]}
-      </p>
+      {/* Display the current word. Centered on the middle character */}
+     <div className="flex justify-center items-center text-6xl font-mono mb-12 h-24">
+      <span className="text-right w-96">{before}</span>
+      <span className="text-red-500 font-bold">{middle}</span>
+      <span className="text-left w-96">{after}</span>
+    </div>
       
       {/* Read Controls */}
       <ReadOptions isPlaying={isPlaying} setIsPlaying={setIsPlaying} wpm={wpm} setWpm={setWpm}/>
@@ -122,7 +133,8 @@ function ReadingView({ setIsReading, text }: ReadingViewProps) {
     </div>
   );
 }
-
+//==================================================//
+//====================== Helpers =====================//
 // Option for controlling playback and speed of the reading.
 function ReadOptions({ isPlaying, setIsPlaying, wpm, setWpm }: ReadOptionsProps) {
   return <div className="flex space-x-4 mb-8">
@@ -140,4 +152,25 @@ function ReadOptions({ isPlaying, setIsPlaying, wpm, setWpm }: ReadOptionsProps)
     />
   </div>
 }
+
+// A hook to manage incremeneting through all the words
+function useWordTimer({isPlaying, setIsPlaying, wpm, setCurrentIndex, wordsLength}: WordTimerProps) {
+  useEffect(() => {
+    if (!isPlaying) return;
+    
+    const interval = setInterval(() => {
+      setCurrentIndex(prev => {
+        const next = prev + 1;
+        if (next >= wordsLength) {
+          setIsPlaying(false);
+          return wordsLength - 1;
+        }
+        return next;
+      });
+    }, 60000 / wpm);
+    
+    return () => clearInterval(interval);
+  }, [isPlaying, wpm]);
+}
+
 
