@@ -15,6 +15,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Fast Reader - RSVP Speed Reading",
   description: "Increase reading speed using Rapid Serial Visual Presentation",
+  keywords: ["RSVP", "speed reading", "fast reader", "reading speed", "rapid serial visual presentation"],
+  authors: [{ name: "Jordan S. Johnson" }],
+  themeColor: "#01368c",
 };
 
 export default function RootLayout({
