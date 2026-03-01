@@ -134,7 +134,7 @@ function ReadingView({ setIsReading, text }: ReadingViewProps) {
     <div className="flex flex-col justify-between" style={{ height: '90vh' }}>
 
       {/* Display the current word. Centered on the middle character */}
-      <div className="flex justify-center items-center text-4xl md:text-6xl font-mono flex-1 px-4">
+      <div className="flex justify-center items-center text-4xl md:text-7xl font-mono flex-1 px-4">
         <div className="flex h-20 md:h-24">
           <span className="text-right w-32 md:w-96 text-white">{before}</span>
           <span className="text-red-500 font-bold">{middle}</span>
