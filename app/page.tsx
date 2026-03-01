@@ -22,7 +22,7 @@ type ReadOptionsProps = {
   wpm: number;
   setWpm: (value: number) => void;
   currentIndex: number;
-  setCurrentIndex: (value: number) => void;
+  setCurrentIndex: React.Dispatch<React.SetStateAction<number>>;
   wordsLength: number;
 };
 
@@ -161,14 +161,39 @@ function ReadOptions({ isPlaying, setIsPlaying, wpm, setWpm, currentIndex, setCu
       {currentIndex + 1}/{wordsLength}
     </div>
 
-    {/* Control Buttons */}
+    {/* Playback Buttons */}
     <div className="flex gap-2">
+      {/* Backward Button */}
+      <button 
+        className="w-16 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors duration-300"
+        onClick={() => setCurrentIndex(prev => {
+          setIsPlaying(false); // Pause when manually changing word
+          return Math.max(0, prev - 1); // Ensure we don't go below the first word
+        })
+      }
+      >
+        ←
+      </button>
+      
+      {/* Play/Pause Button */}
       <button className={`w-24 py-3 rounded-lg transition-colors duration-300 ${isPlaying ? "bg-red-600 hover:bg-red-700 text-white" : "bg-green-600 hover:bg-green-700 text-white"}`}
         onClick={() => setIsPlaying(!isPlaying)}
       >
         {isPlaying ? "Pause" : "Play"}
       </button>
 
+      {/* Forward Button */}
+      <button 
+        className="w-16 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors duration-300"
+        onClick={() => setCurrentIndex(prev => {
+          setIsPlaying(false); // Pause when manually changing word
+          return Math.min(wordsLength - 1, prev + 1); // Ensure we don't go past the last word
+        })}
+      >
+        →
+      </button>
+
+      {/* Restart Button */}
       <button className="w-24 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors duration-300"
         onClick={() => {
           setIsPlaying(false);
@@ -177,8 +202,6 @@ function ReadOptions({ isPlaying, setIsPlaying, wpm, setWpm, currentIndex, setCu
       >
         Restart
       </button>
-
-      {/* TODO: Add reverse button */}
     </div>
 
     {/* WPM Input */}
