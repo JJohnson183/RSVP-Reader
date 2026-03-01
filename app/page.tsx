@@ -155,7 +155,7 @@ function ReadingView({ setIsReading, text }: ReadingViewProps) {
 //====================== Helpers =====================//
 // Option for controlling playback and speed of the reading.
 function ReadOptions({ isPlaying, setIsPlaying, wpm, setWpm, currentIndex, setCurrentIndex, wordsLength }: ReadOptionsProps) {
-  return <div className="flex space-x-4 mb-8 items-center justify-center">
+  return <div className="flex flex-wrap md:flex-nowrap gap-4 mb-8 items-center justify-center">
     {/* Selectable Word Count */}
     <div className="flex items-center gap-1 text-sm text-gray-300">
       <input 
@@ -209,8 +209,10 @@ function ReadOptions({ isPlaying, setIsPlaying, wpm, setWpm, currentIndex, setCu
       >
         →
       </button>
+    </div>
 
-      {/* Restart Button */}
+    {/* Restart Button */}
+    <div>
       <button className="w-24 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors duration-300"
         onClick={() => {
           setIsPlaying(false);
