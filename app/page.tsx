@@ -41,7 +41,7 @@ export default function Home() {
   const [isReading, setIsReading] = useState(false); // Track if the user has started reading
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-linear-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
+    <div className={`flex min-h-screen items-center justify-center ${isReading ? 'bg-gray-950' : 'bg-linear-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800'}`}>
       <main className="w-full max-w-4xl p-8">
 
         {/*=== Determine which view to show: Text input or reading ===*/}
@@ -141,7 +141,7 @@ function ReadingView({ setIsReading, text }: ReadingViewProps) {
         />
 
         {/* Return to Input View */}
-        <button className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors duration-300"
+        <button className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors duration-300"
           onClick={() => setIsReading(false)}
         >
           Enter New Text
@@ -157,10 +157,10 @@ function ReadingView({ setIsReading, text }: ReadingViewProps) {
 function ReadOptions({ isPlaying, setIsPlaying, wpm, setWpm, currentIndex, setCurrentIndex, wordsLength }: ReadOptionsProps) {
   return <div className="flex space-x-4 mb-8 items-center justify-center">
     {/* Selectable Word Count */}
-    <div className="flex items-center gap-1 text-sm text-gray-400 dark:text-gray-500">
+    <div className="flex items-center gap-1 text-sm text-gray-300">
       <input 
         type="number"
-        className="py-0.5 text-center bg-transparent border border-gray-300 dark:border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 tabular-nums"
+        className="py-0.5 text-center bg-transparent border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 tabular-nums text-gray-200"
         style={{ width: `${String(currentIndex + 1).length + 3}ch` }} // Dynamically adjust textbox width based on number of digits
         value={currentIndex + 1}
         onChange={(e) => {
@@ -223,8 +223,8 @@ function ReadOptions({ isPlaying, setIsPlaying, wpm, setWpm, currentIndex, setCu
 
     {/* WPM Input */}
     <div className="flex items-center gap-2">
-      <label className="text-gray-700 dark:text-gray-300 font-medium">WPM:</label>
-      <input type="number" className="w-24 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 dark:text-gray-200 bg-white dark:bg-gray-700"
+      <label className="text-gray-300 font-medium">WPM:</label>
+      <input type="number" className="w-20 p-3 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-200 bg-gray-800"
         value={wpm}
         onChange={(e) => {
           setIsPlaying(false); // Pause when changing speed
