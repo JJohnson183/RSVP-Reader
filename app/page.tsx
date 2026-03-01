@@ -137,19 +137,25 @@ function ReadingView({ setIsReading, text }: ReadingViewProps) {
 //====================== Helpers =====================//
 // Option for controlling playback and speed of the reading.
 function ReadOptions({ isPlaying, setIsPlaying, wpm, setWpm }: ReadOptionsProps) {
-  return <div className="flex space-x-4 mb-8">
+  return <div className="flex space-x-4 mb-8 items-center">
     <button className={`flex-1 py-3 rounded-lg transition-colors duration-300 ${isPlaying ? "bg-red-600 hover:bg-red-700 text-white" : "bg-green-600 hover:bg-green-700 text-white"}`}
       onClick={() => setIsPlaying(!isPlaying)}
     >
       {isPlaying ? "Pause" : "Play"}
     </button>
 
-    <input type="number" className="w-24 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 dark:text-gray-200 bg-white dark:bg-gray-700"
-      value={wpm}
-      onChange={(e) => setWpm(Number(e.target.value))}
-      min={50}
-      max={1000}
-    />
+    <div className="flex items-center gap-2">
+      <label className="text-gray-700 dark:text-gray-300 font-medium">WPM:</label>
+      <input type="number" className="w-24 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 dark:text-gray-200 bg-white dark:bg-gray-700"
+        value={wpm}
+        onChange={(e) => {
+          setIsPlaying(false); // Pause when changing speed
+          setWpm(Number(e.target.value))
+        }}
+        min={50}
+        max={1000}
+      />
+    </div>
   </div>
 }
 
