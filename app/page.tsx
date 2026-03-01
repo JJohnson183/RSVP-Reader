@@ -156,9 +156,26 @@ function ReadingView({ setIsReading, text }: ReadingViewProps) {
 // Option for controlling playback and speed of the reading.
 function ReadOptions({ isPlaying, setIsPlaying, wpm, setWpm, currentIndex, setCurrentIndex, wordsLength }: ReadOptionsProps) {
   return <div className="flex space-x-4 mb-8 items-center justify-center">
-    {/* Word Count */}
-    <div className="text-sm text-gray-400 dark:text-gray-500 tabular-nums">
-      {currentIndex + 1}/{wordsLength}
+    {/* Selectable Word Count */}
+    <div className="flex items-center gap-1 text-sm text-gray-400 dark:text-gray-500">
+      <input 
+        type="number"
+        className="py-0.5 text-center bg-transparent border border-gray-300 dark:border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 tabular-nums"
+        style={{ width: `${String(currentIndex + 1).length + 3}ch` }} // Dynamically adjust textbox width based on number of digits
+        value={currentIndex + 1}
+        onChange={(e) => {
+          const newIndex = Number(e.target.value) - 1;
+
+          // Only update if the new index is within bounds
+          if (newIndex >= 0 && newIndex < wordsLength) {
+            setIsPlaying(false); // Pause when manually changing word
+            setCurrentIndex(newIndex);
+          }
+        }}
+        min={1}
+        max={wordsLength}
+      />
+      <span>/ {wordsLength}</span>
     </div>
 
     {/* Playback Buttons */}
