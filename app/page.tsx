@@ -21,6 +21,7 @@ type ReadOptionsProps = {
   setIsPlaying: (value: boolean) => void;
   wpm: number;
   setWpm: (value: number) => void;
+  setCurrentIndex: (value: number) => void;
 };
 
 type WordTimerProps = {
@@ -122,7 +123,7 @@ function ReadingView({ setIsReading, text }: ReadingViewProps) {
     </div>
       
       {/* Read Controls */}
-      <ReadOptions isPlaying={isPlaying} setIsPlaying={setIsPlaying} wpm={wpm} setWpm={setWpm}/>
+      <ReadOptions isPlaying={isPlaying} setIsPlaying={setIsPlaying} wpm={wpm} setWpm={setWpm} setCurrentIndex={setCurrentIndex}/>
 
       {/* Button to go back to text input */}
       <button className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors duration-300"
@@ -136,14 +137,29 @@ function ReadingView({ setIsReading, text }: ReadingViewProps) {
 //==================================================//
 //====================== Helpers =====================//
 // Option for controlling playback and speed of the reading.
-function ReadOptions({ isPlaying, setIsPlaying, wpm, setWpm }: ReadOptionsProps) {
-  return <div className="flex space-x-4 mb-8 items-center">
-    <button className={`flex-1 py-3 rounded-lg transition-colors duration-300 ${isPlaying ? "bg-red-600 hover:bg-red-700 text-white" : "bg-green-600 hover:bg-green-700 text-white"}`}
-      onClick={() => setIsPlaying(!isPlaying)}
-    >
-      {isPlaying ? "Pause" : "Play"}
-    </button>
+function ReadOptions({ isPlaying, setIsPlaying, wpm, setWpm, setCurrentIndex }: ReadOptionsProps) {
+  return <div className="flex space-x-4 mb-8 items-center justify-center">
+    {/* Control Buttons */}
+    <div className="flex gap-2">
+      <button className={`w-24 py-3 rounded-lg transition-colors duration-300 ${isPlaying ? "bg-red-600 hover:bg-red-700 text-white" : "bg-green-600 hover:bg-green-700 text-white"}`}
+        onClick={() => setIsPlaying(!isPlaying)}
+      >
+        {isPlaying ? "Pause" : "Play"}
+      </button>
 
+      <button className="w-24 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors duration-300"
+        onClick={() => {
+          setIsPlaying(false);
+          setCurrentIndex(0);
+        }}
+      >
+        Restart
+      </button>
+
+      {/* TODO: Add reverse button */}
+    </div>
+
+    {/* WPM Input */}
     <div className="flex items-center gap-2">
       <label className="text-gray-700 dark:text-gray-300 font-medium">WPM:</label>
       <input type="number" className="w-24 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 dark:text-gray-200 bg-white dark:bg-gray-700"
