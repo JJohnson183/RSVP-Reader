@@ -1,6 +1,9 @@
 "use client"; // Render the page client-side
 
-import { useState } from "react"; // Manage variable states (can be thought of making things stateful)
+import { 
+  useState,  // Manage variable states (can be thought of making things stateful)
+  useEffect  // Handle side effects (like timers for word display)
+} from "react"; 
 
 type TextInputViewProps = {
   text: string;
@@ -10,6 +13,14 @@ type TextInputViewProps = {
 
 type ReadingViewProps = {
   setIsReading: (value: boolean) => void;
+  text: string;
+};
+
+type ReadOptionsProps = {
+  isPlaying: boolean;
+  setIsPlaying: (value: boolean) => void;
+  wpm: number;
+  setWpm: (value: number) => void;
 };
 
 
@@ -38,14 +49,13 @@ export default function Home() {
                 <TextInputView text={text} setText={setText} setIsReading={setIsReading}/>
               </div>
             ) 
-            : (<ReadingView setIsReading={setIsReading}/>)
+            : (<ReadingView setIsReading={setIsReading} text={text}/>)
         }
         
       </main>
     </div>
   );
 }
-
 
 function TextInputView({ text, setText, setIsReading }: TextInputViewProps) {
   return (
@@ -72,10 +82,38 @@ function TextInputView({ text, setText, setIsReading }: TextInputViewProps) {
   )
 }
 
-function ReadingView({ setIsReading }: ReadingViewProps) {
+function ReadingView({ setIsReading, text }: ReadingViewProps) {
+  const [words, setWords] = useState<string[]>(text.split(" ")); // Split the input text into words
+  const [currentIndex, setCurrentIndex] = useState(0); // Index of the current word being displayed
+  const [isPlaying, setIsPlaying] = useState(false); // Track if the words are currently playing
+  const [wpm, setWpm] = useState(300); // Display speed (words per minute)
+
+  // Runs when isPlaying or wpm changes. 
+  useEffect(() => {
+      if (!isPlaying) return; // If not playing, do nothing
+      
+      // Increment the current word index evey (60000 / wpm) milliseconds (convert WPM to ms per word)
+      const interval = setInterval(() => {
+        setCurrentIndex(prev => prev + 1);
+      }, 60000 / wpm);
+      
+      // Clear the interval when the component unmounts or when isPlaying/wpm changes
+      return () => clearInterval(interval);
+    }, 
+    [isPlaying, wpm] // Rerun when either isPlaying or wpm changes
+  );
+
   return (
     <div>
-      {/*=== Show reading mode content when in reading mode ===*/}
+      {/* Display the current word */}
+      <p className="text-center text-6xl font-bold text-gray-600 dark:text-gray-300 mb-8">
+        {words[currentIndex]}
+      </p>
+      
+      {/* Read Controls */}
+      <ReadOptions isPlaying={isPlaying} setIsPlaying={setIsPlaying} wpm={wpm} setWpm={setWpm}/>
+
+      {/* Button to go back to text input */}
       <button className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors duration-300"
         onClick={() => setIsReading(false)}
       >
@@ -83,5 +121,23 @@ function ReadingView({ setIsReading }: ReadingViewProps) {
       </button>
     </div>
   );
+}
+
+// Option for controlling playback and speed of the reading.
+function ReadOptions({ isPlaying, setIsPlaying, wpm, setWpm }: ReadOptionsProps) {
+  return <div className="flex space-x-4 mb-8">
+    <button className={`flex-1 py-3 rounded-lg transition-colors duration-300 ${isPlaying ? "bg-red-600 hover:bg-red-700 text-white" : "bg-green-600 hover:bg-green-700 text-white"}`}
+      onClick={() => setIsPlaying(!isPlaying)}
+    >
+      {isPlaying ? "Pause" : "Play"}
+    </button>
+
+    <input type="number" className="w-24 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 dark:text-gray-200 bg-white dark:bg-gray-700"
+      value={wpm}
+      onChange={(e) => setWpm(Number(e.target.value))}
+      min={50}
+      max={1000}
+    />
+  </div>
 }
 
