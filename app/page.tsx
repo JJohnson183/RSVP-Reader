@@ -21,7 +21,9 @@ type ReadOptionsProps = {
   setIsPlaying: (value: boolean) => void;
   wpm: number;
   setWpm: (value: number) => void;
+  currentIndex: number;
   setCurrentIndex: (value: number) => void;
+  wordsLength: number;
 };
 
 type WordTimerProps = {
@@ -129,7 +131,14 @@ function ReadingView({ setIsReading, text }: ReadingViewProps) {
       {/* Bottom items */}
       <div className="max-w-md mx-auto w-full">
         {/* Read Controls */}
-        <ReadOptions isPlaying={isPlaying} setIsPlaying={setIsPlaying} wpm={wpm} setWpm={setWpm} setCurrentIndex={setCurrentIndex}/>
+        <ReadOptions 
+          isPlaying={isPlaying} 
+          setIsPlaying={setIsPlaying} 
+          wpm={wpm} setWpm={setWpm} 
+          currentIndex={currentIndex} 
+          setCurrentIndex={setCurrentIndex} 
+          wordsLength={words.length}
+        />
 
         {/* Return to Input View */}
         <button className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors duration-300"
@@ -145,8 +154,13 @@ function ReadingView({ setIsReading, text }: ReadingViewProps) {
 //==================================================//
 //====================== Helpers =====================//
 // Option for controlling playback and speed of the reading.
-function ReadOptions({ isPlaying, setIsPlaying, wpm, setWpm, setCurrentIndex }: ReadOptionsProps) {
+function ReadOptions({ isPlaying, setIsPlaying, wpm, setWpm, currentIndex, setCurrentIndex, wordsLength }: ReadOptionsProps) {
   return <div className="flex space-x-4 mb-8 items-center justify-center">
+    {/* Word Count */}
+    <div className="text-sm text-gray-400 dark:text-gray-500 tabular-nums">
+      {currentIndex + 1}/{wordsLength}
+    </div>
+
     {/* Control Buttons */}
     <div className="flex gap-2">
       <button className={`w-24 py-3 rounded-lg transition-colors duration-300 ${isPlaying ? "bg-red-600 hover:bg-red-700 text-white" : "bg-green-600 hover:bg-green-700 text-white"}`}
