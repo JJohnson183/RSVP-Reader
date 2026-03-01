@@ -41,9 +41,9 @@ export default function Home() {
   const [isReading, setIsReading] = useState(false); // Track if the user has started reading
 
   return (
-    <div className={`flex min-h-screen items-center justify-center relative ${isReading ? 'bg-gray-950' : 'bg-linear-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800'}`}>
+    <div className={`flex min-h-screen items-center justify-center relative ${isReading ? 'bg-gray-950' : 'bg-linear-to-br from-gray-900 to-gray-800'}`}>
       {/* Watermark */}
-      <div className={`absolute bottom-4 right-4 flex items-center gap-2 text-xs ${isReading ? 'text-gray-700' : 'text-gray-400 dark:text-gray-600'}`}>
+      <div className={`absolute bottom-4 right-4 flex items-center gap-2 text-xs ${isReading ? 'text-gray-700' : 'text-gray-600'}`}>
         <span>Made by Jordan S. Johnson</span>
         <a 
           href="https://github.com/JJohnson183/RSVP-Reader" 
@@ -63,11 +63,11 @@ export default function Home() {
             ? (
               <div>
                 {/*============ Title and subtitle =============*/}
-                <h1 className="text-4xl font-bold text-center mb-8 text-gray-800 dark:text-white">
+                <h1 className="text-4xl font-bold text-center mb-8 text-white">
                   RSVP Fast Reader
                 </h1>
                 
-                <p className="text-center text-gray-600 dark:text-gray-300 mb-8">
+                <p className="text-center text-gray-300 mb-8">
                   This is a reader that implements the Rapid Serial Visual Presentation (RSVP) technique to help you read faster.
                 </p>
 
@@ -88,7 +88,7 @@ export default function Home() {
 function TextInputView({ text, setText, setIsReading }: TextInputViewProps) {
   return (
     <div>
-      <textarea className="w-full h-48 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 dark:text-gray-200 bg-white dark:bg-gray-700"
+      <textarea className="w-full h-48 p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-200 bg-gray-700"
         placeholder="Enter your text here to start reading..."
         value={text}
         onChange={(e) => setText(e.target.value)}
@@ -136,9 +136,9 @@ function ReadingView({ setIsReading, text }: ReadingViewProps) {
       {/* Display the current word. Centered on the middle character */}
       <div className="flex justify-center items-center text-4xl md:text-6xl font-mono flex-1 px-4">
         <div className="flex h-20 md:h-24">
-          <span className="text-right w-32 md:w-96">{before}</span>
+          <span className="text-right w-32 md:w-96 text-white">{before}</span>
           <span className="text-red-500 font-bold">{middle}</span>
-          <span className="text-left w-32 md:w-96">{after}</span>
+          <span className="text-left w-32 md:w-96 text-white">{after}</span>
         </div>
       </div>
     
